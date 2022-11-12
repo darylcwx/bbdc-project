@@ -4,7 +4,7 @@
     <q-card-section class="title q-pb-none">{{ name }}</q-card-section>
     <q-card-section class="role q-py-none">{{ title }}</q-card-section>
     <q-card-section class="desc">{{ description }}</q-card-section>
-    <q-card-section class="text-center">
+    <q-card-section class="text-center items-end">
         <a :href="insta"><img src="@/assets/ig-icon.png" class="social-icon"></a>
         <a :href="tele"><img src="@/assets/tele-icon.png" class="social-icon"></a>
     </q-card-section>

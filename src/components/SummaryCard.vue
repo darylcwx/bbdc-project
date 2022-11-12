@@ -1,5 +1,5 @@
 <template>
-  <q-card class="card q-pb-md" style="width: 100%;" flat>
+  <q-card class="card q-mb-md" style="width: 100%;" flat>
     <q-card-section horizontal class="bg-image">
       <q-card-section class="progress text-center">
         <q-circular-progress rounded v-if="value !== value" indeterminate show-value class="text-light-blue-8 text-bold"

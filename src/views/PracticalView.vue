@@ -13,7 +13,7 @@
 
         <div :class="{ hidden: isActive }">
             <div class="font row justify-center text-center">
-                <div v-for="(car, index) of this.motorcars" :key='index' class="col-10 col-sm-5 col-md-3 col-lg-2 q-ma-md"
+                <div v-for="(car, index) of this.motorcars" :key='index' class="col-10 col-sm-5 col-md-4 q-ma-md"
                     :class="'car' + index">
 
                     <PracticalCard :name="car.name" :desc="car.desc" :pic="car.pic" />

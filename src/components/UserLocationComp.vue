@@ -14,7 +14,7 @@
             <div id='mode' class="row justify-center q-py-lg text-white" style="width: 100%;">
                 <q-select class="q-px-sm" dark rounded standout v-model="mode" :options="options" style="width: 50%;"
                     label="Select your mode of transport!"
-                    @update:model-value="calculateAndDisplayRoute(), animateTable()"/>
+                    @update:model-value="calculateAndDisplayRoute(), animateTable()" />
                 <!-- <q-btn class="q-px-sm" outlined rounded no-caps size='lg' style="width: 25%;" color="primary"
                     id="getDirections" @click="calculateAndDisplayRoute(), animateTable()">
                     How do I get
@@ -86,7 +86,6 @@ export default {
         calculateAndDisplayRoute() {
             const directionsService = new window.google.maps.DirectionsService()
             const directionsRenderer = new window.google.maps.DirectionsRenderer()
-            console.log(this.mode)
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     // success
@@ -216,7 +215,7 @@ export default {
     font-family: 'Open Sans', sans-serif;
 }
 
-.q-table th { 
+.q-table th {
     font-weight: bold;
     font-size: 18px;
 }

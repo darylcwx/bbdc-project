@@ -1,7 +1,7 @@
 <template>
   <!-- v-if="this.$route.path !== '/' && this.$route.path !== '/dev-team' && this.$route.path !== '/location'
     && this.$route.path !== '/login' && this.$route.path !== '/register'" -->
-  <q-layout view="hHh lpr lFf">
+  <q-layout view="hHh Lpr lFf">
 
     <q-header :class="['text-white', getClassFromRouteName]">
       <q-toolbar>

@@ -2,7 +2,7 @@
   <div class="container q-pa-xl">
     <div class="bg"></div>
     <div class="row justify-center" style="width: 100%;">
-      <SummaryCard  />
+      <SummaryCard />
       <CalendarComp />
     </div>
 
@@ -118,6 +118,6 @@ export default {
   height: 100%;
   opacity: 1;
   z-index: -1;
-  filter: brightness(10%);
+  filter: brightness(30%);
 }
 </style>

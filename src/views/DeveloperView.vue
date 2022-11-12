@@ -18,8 +18,6 @@
 import DevTeamComp from '@/components/DevTeamComp.vue'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-
-
 gsap.registerPlugin(ScrollTrigger)
 
 
