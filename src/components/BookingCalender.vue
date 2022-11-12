@@ -223,6 +223,9 @@ export default {
                   wallet: remainingBalance,
                 });
 
+                store.lessonDate = chosenDate
+                store.lessonTime = selected.value[0].name
+
                 router.push("/confirmation");
               })
               .catch((error) => {
