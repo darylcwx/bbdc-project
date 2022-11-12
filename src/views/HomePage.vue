@@ -21,20 +21,20 @@
             <div class="down">&darr;</div>
         </section>
         <!-- <hr> -->
-        <section class="con1 q-pa-xl" id="our-rates">
+        <section class="con1 q-pa-xl font" id="our-rates">
             <div class="bg bg2"></div>
             <h2 class="title t1">Our Rates</h2>
             <div class="c1 row q-px-xl justify-center">
                 <div class="col-12 col-md-8 col-lg-6">
-                    <q-table title="Rates" :rows=this.rows :columns=this.columns :pagination=this.pagination
-                        row-key="index" hide-bottom />
+                    <q-table :rows=this.rows :columns=this.columns :pagination=this.pagination
+                        row-key="index" hide-bottom></q-table>
                 </div>
             </div>
 
         </section>
 
         <!-- <hr> -->
-        <section class="con2 q-pa-xl">
+        <section class="con2 q-pa-xl font">
             <div class="bg bg3"></div>
             <h2 class="title t2">Testimonials</h2>
             <div class="c2 row q-px-xl">
@@ -47,7 +47,9 @@
         </section>
 
         <img src="@/assets/white-up-arrow.png" class="backToTop" @click="scrollBackToTop">
+
     </q-layout>
+    <Footer />
 </template>
 
 
@@ -56,13 +58,15 @@ import tCard from '@/components/TestimonyCard.vue'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
+import Footer from '@/components/Footer.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(ScrollToPlugin)
 
 export default {
     components: {
-        tCard
+        tCard,
+        Footer
     },
     data() {
         return {
@@ -77,6 +81,7 @@ export default {
                 {
                     name: 'category',
                     label: 'Category',
+                    require: true,
                     align: 'left',
                     field: row => row.category,
                     sortable: true
@@ -136,6 +141,11 @@ export default {
     },
     mounted() {
         this.scrollAnimation();
+        if (this.$route.query.to == 'our-rates'){
+            gsap.to(window, {
+                    scrollTo: '#our-rates', duration: 1, ease: 'power1'
+                })
+        }
     },
     created() {
         window.addEventListener('scroll', this.handleScroll);
@@ -204,7 +214,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang='scss'>
 .body {
     height: 100%;
     width: 100%;
@@ -270,6 +280,14 @@ section {
     flex-direction: column;
 }
 
+.q-table th {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.font {
+    font-family: 'Open Sans', sans-serif;
+}
 .backToTop {
     position: fixed;
     bottom: 20px;
@@ -278,10 +296,12 @@ section {
     height: 50px;
     z-index: 1;
     opacity: 0;
+    background-color: rgb(32, 32, 32);
+    border-radius: 25px;
 }
 
 .backToTop:hover {
-    background-color: rgb(53, 53, 53);
+    background-color: rgb(90, 90, 90);
     border-radius: 25px;
 }
 

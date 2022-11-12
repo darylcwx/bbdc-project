@@ -12,8 +12,7 @@
   </q-page-container> -->
 
   <!-- <router-view/> -->
-
-
+  <!-- <Footer /> -->
 </template>
 
 <script>
@@ -26,10 +25,8 @@ import ChatBot from "@/components/ChatBot.vue";
 export default {
   name: 'App',
   components: {
-    // AppNavigation,
     NavigationLayout,
     ChatBot
-    // CalendarComp,
   }
 }
 </script>

@@ -36,8 +36,6 @@
 // @ is an alias to /src
 import CalendarComp from '@/components/CalendarComp.vue'
 import SummaryCard from '@/components/SummaryCard.vue'
-// import { ref, computed } from 'vue'
-// import gsap from 'gsap'
 
 export default {
   name: 'BookingView',

@@ -136,9 +136,15 @@
             dark
             label="Password"
             v-model="password"
-            type="password"
+            :type="isPwd ? 'password' : 'text'"
             placeholder="Your Password here"
+          > <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
           />
+        </template></q-input>
         </div>
 
         <div
@@ -288,6 +294,7 @@ import { useRouter } from "vue-router"; // import router
 import { useStore } from "@/pinia_store";
 import gsap from "gsap";
 
+
 var today = new Date();
 var mm = String(today.getMonth()).padStart(2, "0"); //January is 0!
 var yyyy = today.getFullYear();
@@ -298,6 +305,7 @@ export default {
     return {
       uname: "",
       password: "",
+      isPwd: true,
       fName: "",
       lName: "",
       logIn: true,

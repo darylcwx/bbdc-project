@@ -14,8 +14,11 @@
                         <q-btn icon="close" flat round dense v-close-popup />
                     </q-card-section>
                     <q-card-section>
-                        <p>Do check out <a href='#' @click="redirToRates" target='_blank' rel='noopener noreferrer'>this
-                                link</a> for our detailed rates!</p> (The link
+                        <p>Do check out &nbsp;
+                            <q-btn no-caps color='primary' rounded @click="redirToRates"
+                                target='_blank' rel='noopener noreferrer' v-close-popup>
+                                this link
+                            </q-btn>&nbsp; for our detailed rates!</p> (The link
                         opens a new tab <span>&#128578;)</span>
                     </q-card-section>
                 </q-card>
@@ -183,8 +186,8 @@ export default {
             // alert()
         },
         redirToRates() {
-            console.log("test")
-            this.$router.push('/#/#our-rates');
+            let route = this.$router.resolve({ path: '/', query: { to: 'our-rates'} });
+            window.open(route.href, '_blank')
         },
         animate() {
             gsap.from('.header1',
@@ -213,21 +216,6 @@ export default {
         toggleHistory() {
             this.tl.reversed(!this.tl.reversed());
         }
-        // toggleHistory() {
-        //     if (this.isActive) {
-        //         this.isActive = false;
-        //         gsap.from('.header2',
-        //             { opacity: 0, x: 500, duration: 1, ease: 'power1' })
-        //         gsap.from('.history',
-        //             { opacity: 0, x: 500, duration: 1, ease: 'power1' })
-        //     } else {
-        //         this.isActive = true;
-        //         gsap.to('.header2',
-        //             { opacity: 0, x: 500, duration: 1, ease: 'power1' })
-        //         gsap.to('.history',
-        //             { opacity: 0, x: 500, duration: 1, ease: 'power1' })
-        //     }
-        // }
     }
 }
 

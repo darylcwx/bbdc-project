@@ -3,6 +3,7 @@
         <div class="bg"></div>
         <h2 class="header">Our center is located at</h2>
         <UserLocationComp></UserLocationComp>
+        
     </div>
 </template>
 
@@ -10,6 +11,7 @@
 import UserLocationComp from '@/components/UserLocationComp.vue'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+
 gsap.registerPlugin(ScrollTrigger)
 
 
