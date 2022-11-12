@@ -7,6 +7,8 @@ export const useStore = defineStore('currentUser', {
             userID: 0,
             progress: 0,
             lessonType: "",
+            lessonDate: "",
+            lessonTime: "",
         }
     },
     getters: {

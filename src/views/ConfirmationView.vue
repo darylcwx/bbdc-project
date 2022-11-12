@@ -17,19 +17,19 @@
                         <div class="col-10 col-md-4 text-center q-my-md">
                             Package
                             <div class="formatText">
-                                {\{ Package name here }\}
+                                {{ lesson }}
                             </div>
                         </div>
                         <div class="col-10 col-md-4 text-center q-my-md">
                             Date
                             <div class="formatText">
-                                Friday, November 11th
+                                {{ lessonDate }}
                             </div>
                         </div>
                         <div class="col-10 col-md-4 text-center q-my-md">
                             Timing
                             <div class="formatText">
-                                6pm-8pm
+                                {{ lessonTime }}
                             </div>
                         </div>
                     </div>
@@ -37,15 +37,16 @@
             </q-card-section>
             <q-card-actions class="justify-center q-pa-md">
                 <!-- when making another booking, go back to the original page  -->
-                <q-btn label="Make another booking" type="submit" color="primary" rounded no-caps class="q-mx-md q-mb-md btn1">
-                    <router-link :to="{ path: '/simulator' }" />
-                </q-btn>
+                <router-link to="/summary" id="confirm-button">
+                    <q-btn label="Return to Main Page" color="primary" rounded no-caps class="q-mx-md q-mb-md btn1" ></q-btn>
+                </router-link>
+                
 
                 <!-- when it close go to the homepage -->
-                <q-btn label="Confirm (?? confirm alr no meh)" type="Back" color="primary" rounded no-caps
+                <!-- <q-btn label="Confirm (?? confirm alr no meh)" type="Back" color="primary" rounded no-caps
                     class="q-mx-md q-mb-md btn2">
                     <router-link :to="{ path: '/' }" />
-                </q-btn>
+                </q-btn> -->
 
             </q-card-actions>
         </q-card>
@@ -57,15 +58,23 @@
 // import 
 import { useStore } from "@/pinia_store"
 import gsap from 'gsap'
-
-// pinia 
-const store = useStore();
-// how to find lesson tyoe => store.lessonType
-console.log(store)
+import { getDatabase, ref as FBref, onValue, get } from "firebase/database";
 
 export default {
     name: 'confirm-card',
-    // props: 
+    setup() {
+        // Pinia 
+        const store = useStore();
+        var lessonType = store.lessonType
+        var formattedLesson = lessonType.charAt(0).toUpperCase() + lessonType.slice(1);
+        
+        return {
+            lesson: formattedLesson,
+            lessonDate: store.lessonDate,
+            lessonTime: store.lessonTime
+        }
+
+    },
     mounted() {
         this.animate();
     },
@@ -131,6 +140,10 @@ export default {
     opacity: 1;
     z-index: -1;
     filter: brightness(30%);
+}
+
+#confirm-button{
+    text-decoration: none;
 }
 </style>
 
