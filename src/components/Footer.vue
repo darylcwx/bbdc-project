@@ -2,13 +2,13 @@
     <div class="footer bg-light-blue-8 text-white">
         <div class="row">
             <div class="col-sm-6 operations q-px-md q-py-sm">
-                <h5 class="text-left q-py-sm">Operating Hours</h5>
+                <h5 class="text-left q-py-sm text-white text-bold">Operating Hours</h5>
                 Mon - Fri: 0830 - 1930<br>
                 Sat & Sun: 0830 - 1300<br>
                 Closed on Public Holidays
             </div>
             <div class="col-sm-6 mobile q-px-md q-py-sm">
-                <h5 class="q-py-sm text-left">Mobile Application</h5>
+                <h5 class="q-py-sm text-left text-white text-bold">Mobile Application</h5>
                 <div class="app">
                     <a href="https://apps.apple.com/sg/app/bbdc/id1382558683" target="_blank"><img src="@/assets/appstore.png" style="margin-right: 5px;" /></a>
                     <a href="https://play.google.com/store/apps/details?id=com.bbdc.android.user" target="_blank"><img

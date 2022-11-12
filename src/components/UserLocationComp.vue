@@ -111,55 +111,47 @@ export default {
                                 // accessing and storing step by step instructions
                                 this.totals = "About " + response.routes[0].legs[0].distance.text + " away, around " + response.routes[0].legs[0].duration.text + " required"
                                 this.steps = []
-                                console.log(response.routes[0].legs[0].steps)
-                                if (this.mode == 'WALKING') {
-                                } else {
+                                for (let i of response.routes[0].legs[0].steps) {
+                                    if (i.travel_mode == 'TRANSIT') {
+                                        let instructions = ""
+                                        let numstops = i.transit.num_stops
+                                        let type = i.transit.line.vehicle.name
+                                        if (type == 'Tram'){
+                                            type = 'LRT'
+                                        } else if (type == 'Subway'){
+                                            type = 'MRT'
+                                        }
+                                        let ss = i.transit.departure_stop.name
+                                        let es = i.transit.arrival_stop.name
+                                        let distance = numstops + " stops"
+                                        let duration = i.duration.text
 
-                                    for (let i of response.routes[0].legs[0].steps) {
-                                        if (i.travel_mode == 'TRANSIT') {
-                                            let instructions = ""
-                                            let numstops = i.num_stops
-                                            let ss = i.transit.departure_stop.name
-                                            let es = i.transit.arrival_stop.name
-                                            let distance = numstops + " stops"
-                                            let duration = i.duration.text
+                                        instructions = "Take " + type + " from " + ss + " to " + es
+                                        this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
+                                    } else if (i.travel_mode == 'WALKING') {
+                                        if (i.steps) {
+                                            for (let step of i.steps) {
+                                                let instructions = step.instructions
+                                                let distance = step.distance.text
+                                                let duration = step.duration.text
 
-                                            instructions = "Take MRT from " + ss + " to " + es
-                                            this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
-                                        } else if (i.travel_mode == 'WALKING') {
-                                            if (i.steps) {
-                                                for (let step of i.steps) {
-                                                    let instructions = step.instructions
-                                                    let distance = step.distance.text
-                                                    let duration = step.duration.text
-
-                                                    instructions = instructions.replace(/<\/?[^>]+(>|$)/g, "");
-                                                    if (instructions.includes('Destination')) {
-                                                        let first = instructions.slice(0, instructions.indexOf('Destination'));
-                                                        let second = instructions.slice(instructions.indexOf('Destination'))
-                                                        this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
-                                                        this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
-                                                    } else {
-
-                                                        this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
-                                                    }
-                                                }
-                                            } else {
-                                                let instructions = i.instructions
-                                                let distance = i.distance.text
-                                                let duration = i.duration.text
                                                 instructions = instructions.replace(/<\/?[^>]+(>|$)/g, "");
                                                 if (instructions.includes('Destination')) {
                                                     let first = instructions.slice(0, instructions.indexOf('Destination'));
                                                     let second = instructions.slice(instructions.indexOf('Destination'))
                                                     this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
                                                     this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
+                                                } else if (instructions.includes('Take the stairs')){
+                                                    let first = instructions.slice(0, instructions.indexOf('Take'));
+                                                    let second = instructions.slice(instructions.indexOf('Take'))
+                                                    this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
+                                                    this.steps.push({ 'directions': second, 'distance': '', 'ett': '1 min' })
                                                 } else {
 
                                                     this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
                                                 }
                                             }
-                                        } else { // driving
+                                        } else {
                                             let instructions = i.instructions
                                             let distance = i.distance.text
                                             let duration = i.duration.text
@@ -174,11 +166,22 @@ export default {
                                                 this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
                                             }
                                         }
+                                    } else { // driving
+                                        let instructions = i.instructions
+                                        let distance = i.distance.text
+                                        let duration = i.duration.text
+                                        instructions = instructions.replace(/<\/?[^>]+(>|$)/g, "");
+                                        if (instructions.includes('Destination')) {
+                                            let first = instructions.slice(0, instructions.indexOf('Destination'));
+                                            let second = instructions.slice(instructions.indexOf('Destination'))
+                                            this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
+                                            this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
+                                        } else {
 
-
+                                            this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
+                                        }
                                     }
                                 }
-
                                 // unhide table
                                 this.isActive = false
                             })
