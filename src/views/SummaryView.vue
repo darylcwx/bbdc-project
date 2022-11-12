@@ -4,6 +4,7 @@
     <div class="row justify-center" style="width: 100%;">
       <SummaryCard />
       <CalendarComp />
+      <WeatherComp />
     </div>
 
   <!-- add in road map visual, carouselll?  -->
@@ -37,12 +38,14 @@
 // @ is an alias to /src
 import CalendarComp from '@/components/CalendarComp.vue'
 import SummaryCard from '@/components/SummaryCard.vue'
+import WeatherComp from '@/components/WeatherComponent.vue';
 
 export default {
   name: 'BookingView',
   components: {
     CalendarComp,
-    SummaryCard
+    SummaryCard,
+    WeatherComp
   },
 }
 </script>
