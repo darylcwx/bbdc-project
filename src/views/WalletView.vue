@@ -100,7 +100,7 @@
 
 <script>
 import { ref } from 'vue'
-import { getDatabase, ref as FBref, onValue, set } from "firebase/database";
+import { getDatabase, ref as FBref, onValue, update } from "firebase/database";
 import { useStore } from "@/pinia_store";
 import gsap from 'gsap'
 
@@ -171,18 +171,11 @@ export default {
     },
     methods: {
         topUp() {
-            let update = this.newBal
-            console.log(update)
-            set(userRef, {
-                wallet: update
+            console.log(this.newBal)
+            update(userRef, {
+                wallet: this.newBal
             })
-            .then(() => {
-                this.submit = false
-                return console.log('top-up success')
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+            this.submit = false
         },
         confirm() {
             // setTimeout(event.$parent)
