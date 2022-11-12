@@ -13,7 +13,7 @@
           style="border-radius: 20px;">
           <h3 class="q-pb-sm text-left font">{{ capitalizeTitle(booking.type) }}</h3>
           <h5 class="q-pb-md text-left font">{{ booking.time }}</h5>
-          <p class="font">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          <p class="font text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat.</p>
         </q-tab-panel>
