@@ -138,6 +138,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/SimulatorBookingView.vue')
   },
   {
+    path: '/confirmation',
+    name: 'confirmation',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ConfirmationView.vue')
+  },
+  {
     path: '/#rates',
     name: 'our-rates',
     component: () => import('../views/HomePage.vue')

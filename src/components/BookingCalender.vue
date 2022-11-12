@@ -24,7 +24,7 @@
         
           <div class="q-pa-md">
             <div class='placement'>
-            <q-table :title="date" :rows="rows" :columns="columns" row-key="name"
+            <q-table title="" :rows="rows" :columns="columns" row-key="name"
               :selected-rows-label="getSelectedString" selection="single" v-model:selected="selected"
               style="border-radius: 20px;" />
               <q-btn @click="onConfirm" label="Confirm" type="submit" color="primary" rounded no-caps class="q-my-md">
@@ -45,6 +45,8 @@ import { ref } from "vue";
 import { getDatabase, ref as FBref, onValue, set, update } from "firebase/database";
 import { useStore } from "@/pinia_store";
 import gsap from "gsap";
+import { useRouter } from "vue-router";
+
 
 var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
 
@@ -79,6 +81,8 @@ export default {
     const db = getDatabase();
     const lessRef = FBref(db, "lessons/" + lessonType);
     const userRef = FBref(db, "users/" + userID)
+    
+    const router = useRouter();
 
     var accountBalance = ref(0)
     var userBookings = ref({})
@@ -146,8 +150,11 @@ export default {
           });
         }
         submitResult.value = data;
+        console.log(submitResult.value)
         // const bookingRef = FBref(db, "users/" + userID + "/booking");
         
+
+        // console.log("ok");
         gsap.from(".step2", {
           opacity: 0,
           x: 400,
@@ -191,11 +198,11 @@ export default {
               price: bookingData.price,
             })
               .then(() => {
-                alert("booking success")
-
                 update(userRef, {
                   wallet: remainingBalance,
                 });
+
+                router.push("/confirmation");
               })
               .catch((error) => {
                 console.log(error);
@@ -209,11 +216,11 @@ export default {
               price: bookingData.price,
             })
               .then(() => {
-                alert("booking success")
-
                 update(userRef, {
                   wallet: remainingBalance,
                 });
+
+                router.push("/confirmation");
               })
               .catch((error) => {
                 console.log(error);

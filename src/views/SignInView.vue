@@ -443,7 +443,7 @@ export default {
       let lastUser = 0;
       onValue(usersRef, (snapshot) => {
         var data = snapshot.val();
-        lastUser = +Object.keys(data).pop();
+        lastUser = +Object.keys(data).pop();z
       });
 
       if (this.password && this.fName && this.lName && this.nric && this.birthday) {

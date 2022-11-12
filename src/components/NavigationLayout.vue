@@ -18,14 +18,14 @@
         </q-toolbar-title>
 
         <q-space />
-        <q-tabs>
-          <q-route-tab v-if="signInCheck == 'no'" class="tab" no-caps name="home" label="Home" to="/" />
-          <q-route-tab v-else class="tab" no-caps name="home" label="Home" to="/summary" />
+        <q-tabs v-if="signInCheck == 'no'">
+          <q-route-tab  class="tab" no-caps name="home" label="Home" to="/" />
+          <!-- <q-route-tab class="tab" no-caps name="home" label="Home" to="/summary" /> -->
           <q-route-tab class="tab" no-caps name="location" label="Locate Us" to="/location" />
           <q-route-tab class="tab" no-caps name="dev-team" label="Dev Team" to="/dev-team" />
           <q-route-tab class="tab" no-caps name="login" label="Login" to="/login" v-if="this.$route.path === '/' || this.$route.path === '/dev-team' || this.$route.path === '/location'
           || this.$route.path === '/login' || this.$route.path === '/register'" />
-          <q-route-tab v-if="signInCheck == 'yes'" class="tab" no-caps name="logout" label="Logout" @click="logout" to="/"  />
+          <!-- <q-route-tab v-if="signInCheck == 'yes'" class="tab" no-caps name="logout" label="Logout" @click="logout" to="/"  /> -->
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -113,6 +113,18 @@
           </q-item>
         </router-link>
 
+        <router-link to="/" class="link">
+          <q-item clickable v-ripple active-class="active-link" :active="link === 'logout'"
+            @click="logout(); leftDrawerOpen = 'false'">
+            <q-item-section avatar>
+              <q-icon name="logout" size="lg"></q-icon>
+            </q-item-section>
+            <q-item-section>
+              Log Out
+            </q-item-section>
+          </q-item>
+        </router-link>
+
         <!-- <router-link to="/info" class="link">
           <q-item clickable v-ripple :active="link === 'info'" @click="link = 'info'; leftDrawerOpen = 'false'">
             <q-item-section avatar>
@@ -176,7 +188,7 @@
         </transition>
       </router-view>
     </q-page-container> -->
-    
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -186,10 +198,11 @@
 
 <script>
 import { ref } from 'vue'
+
 export default {
   setup() {
     // const leftDrawerOpen = ref(false)
-    // sessionStorage.setItem('signInCheck', 'initial')
+    sessionStorage.setItem('signInCheck', 'no')
     // console.log('sessionStorage', sessionStorage.getItem('signInCheck'))
 
     return {
@@ -205,7 +218,8 @@ export default {
   },
   methods: {
     logout() {
-      sessionStorage.clear()
+      // sessionStorage.clear()
+      sessionStorage.setItem('signInCheck', 'no')
       console.log('logout')
     }
   },

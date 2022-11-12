@@ -19,10 +19,15 @@
 
 <script>
 // import { ref, computed } from 'vue'
+import { useStore } from "@/pinia_store";
 import { getDatabase, ref as dbref, onValue } from "firebase/database"
 import gsap from 'gsap'
+
+const store = useStore();
+var userID = store.userID;
+
 const db = getDatabase()
-const usersRef = dbref(db, "users")
+const usersRef = dbref(db, "users/" + userID)
 
 export default {
   name: 'SummaryView',
@@ -49,11 +54,11 @@ export default {
 
 // Helper Functions
 function getProgress() {
-  var userProgress = ""
+  var userProgress = 0
 
   onValue(usersRef, (snapshot) => {
     var data = snapshot.val()
-    userProgress = data[0].progress
+    userProgress = data.progress
   })
 
   return parseInt(userProgress)
