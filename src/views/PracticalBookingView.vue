@@ -1,0 +1,59 @@
+<template>
+    <div class="container q-pa-xl">
+        <div class="bg"></div>
+        <h2 class="header">Practical Booking</h2>
+        <div class="row justify-center" style="width: 100%;">
+            <BookingCalendar />
+        </div>
+    </div>
+</template>
+
+<script>
+import BookingCalendar from '@/components/BookingCalender.vue'
+import gsap from 'gsap'
+
+
+export default {
+    components: {
+        BookingCalendar,
+    },
+    data() {
+        return {
+        }
+    },
+    mounted() {
+        this.animate();
+    },
+    methods: {
+        animate() {
+            gsap.from('.header',
+                { opacity: 0, x: -700, duration: 1, ease: 'back' })
+        }
+    }
+}
+</script>
+
+<style scoped>
+.container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.bg {
+    position: absolute;
+    background: url('@/assets/booking-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    z-index: -1;
+    filter: brightness(20%);
+}
+</style>
