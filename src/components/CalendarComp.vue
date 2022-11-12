@@ -22,7 +22,6 @@
               style="border-radius: 20px;"
           />
         </div>
-        {{ bookSession() }}
       </template>
 
       <template v-slot:after>
@@ -41,7 +40,7 @@
             :name="date"
             class="text-dark panel"
           >
-            <div class="text-h4 q-mb-md">{{ booking.type }}</div>
+            <div class="text-h4 q-mb-md">{{ capitalizeTitle(booking.type) }}</div>
             <strong><p>
               Timeslot: {{ booking.time }}
             </p></strong>
@@ -59,7 +58,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { capitalize, ref } from "vue";
 import { getDatabase, ref as FBref, onValue, get } from "firebase/database";
 import { useStore } from "@/pinia_store";
 import gsap from 'gsap'
@@ -72,8 +71,8 @@ var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
 export default {
   setup() {
     const db = getDatabase();
-    // const bookingRef = FBref(db, 'users/'+userID+'/booking')
-    const bookingRef = FBref(db, "bookings");
+    const bookingRef = FBref(db, 'users/'+userID+'/bookings')
+    // const bookingRef = FBref(db, "bookings");
 
     var dates = [];
     var bookings = {};
@@ -113,9 +112,6 @@ export default {
       bookings[dates[i]] = data[pre_dates[i]];
     }
 
-    console.log(dates)
-    console.log(typeof dates)
-
     return {
       splitterModel: ref(50),
       date: ref(today),
@@ -127,16 +123,13 @@ export default {
     this.animate()
   },
   methods: {
-    bookSession() {
-      var selectedDate = this.date;
-
-      // do wtv you need in this place
-      return;
-    },
     animate(){
       gsap.from('.calendar-body',
         {opacity: 0, x: -400, duration: 1, ease: 'power1'})
-    }
+    },
+    capitalizeTitle(type) {
+      return type.charAt(0).toUpperCase() + type.slice(1);
+    },
   },
 };
 </script>

@@ -12,6 +12,7 @@
               landscape
               v-model="date"
               event-color="orange"
+              :events="events"
               color="light-blue-8"
               today-btn
               :options="
@@ -26,38 +27,6 @@
           </q-form>
         </div>
       </template>
-
-      <!-- <template v-slot:after>
-          <q-tab-panels
-            v-model="date"
-            animated
-            transition-prev="jump-up"
-            transition-next="jump-up"
-          >
-            <q-tab-panel name="2022/11/01">
-              <div class="text-h4 q-mb-md">2019/02/01</div>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            </q-tab-panel>
-  
-            <q-tab-panel name="2022/11/05">
-              <div class="text-h4 q-mb-md">2019/02/05</div>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            </q-tab-panel>
-  
-            <q-tab-panel name="2022/11/06">
-              <div class="text-h4 q-mb-md">2019/02/06</div>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            </q-tab-panel>
-          </q-tab-panels>
-        </template> -->
-
-      <!-- <span v-for="(item, index) in submitResult" :key="index">
-        {{ item.name }} = {{ item.value }}
-      </span> -->
 
       <template v-if="submitResult != ''" v-slot:after>
         <div>
@@ -74,7 +43,7 @@
             v-model:selected="selected"
           />
 
-          <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          <!-- <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div> -->
         </div>
         <div>
           <span>Confirm your bookings!</span>
@@ -122,13 +91,7 @@ const columns = [
     label: "Price",
     field: "price",
     sortable: true,
-  },
-  // { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-  // { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-  // { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  // { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-  // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+  }
 ];
 
 export default {
@@ -146,6 +109,7 @@ export default {
     var accountBalance = ref(0)
     var userBookings = ref({})
     var userData = {}
+    var dates = []
 
     onValue(userRef, (snapshot) => {
       userData = snapshot.val();
@@ -154,10 +118,20 @@ export default {
     })
 
     let userArrKeys = Object.keys(userData)
-    let userArr = Object.entries(userData)
-    console.log(userArrKeys)
-    console.log(userArr)
-    console.log(userBookings)
+    // let userArr = Object.entries(userData)
+
+    if (userBookings != undefined) {
+      let userBookingsArr = Object.keys(userBookings)
+      
+      for (let i in userBookingsArr) {
+          let pre_str = userBookingsArr[i];
+          let first = pre_str.slice(0, 4);
+          let second = pre_str.slice(4, 6);
+          let third = pre_str.slice(6, 8);
+          let post_str = first + "/" + second + "/" + third;
+          dates.push(post_str);
+      }
+    }
     
 
     // Populate the table
@@ -183,7 +157,7 @@ export default {
     return {
       splitterModel: ref(50),
       date: ref(today),
-      // events: ["2022/11/01", "2022/11/05", "2022/11/06"],
+      events: dates,
 
       submitResult,
 
@@ -242,6 +216,7 @@ export default {
             set(FBref(db, "users/" + userID + "/bookings/" + cleanedDate), {
             time: bookingData.timeslot,
             type: lessonType,
+            price: bookingData.price,
             })
             .then(() => {
               alert("booking success")
@@ -259,6 +234,7 @@ export default {
             set(FBref(db, "users/" + userID + "/bookings/" + cleanedDate), {
             time: bookingData.timeslot,
             type: lessonType,
+            price: bookingData.price,
             })
             .then(() => {
               alert("booking success")

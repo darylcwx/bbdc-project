@@ -1,186 +1,131 @@
 <template>
-    <div class="q-pa-md">
-      <q-table
-        class="my-sticky-header-table font"
-        title="Account History"
-        :rows="rows"
-        :columns="columns"
-        row-key="name"
-        flat
-        bordered
-        :seperator="separator"
-        
-      />
-    </div>
-  </template>
-  
-  <script>
-    import { ref } from 'vue' 
+  <div class="q-pa-md">
+    <q-table
+      class="my-sticky-header-table"
+      title="Account History"
+      :rows="rows"
+      :columns="columns"
+      row-key="name"
+      flat
+      bordered
+      :seperator="separator"
+      no-data-label="You don't have any sessions! Book a lesson now!"
+    />
+  </div>
+</template>
 
-  const columns = [
-    {
-      name: 'type',
-      required: true,
-      label: "Type" ,
-      align: 'left',
-      field: row => row.name,
-      format: val => `${val}`,
-      sortable: true
-    },
-    { name: 'Number', align: 'center', label: 'Number', field: 'number', sortable: true },
-    { name: 'Status', label: 'Status', field: 'status', sortable: true },
-    { name: 'Price', label: 'Price', field: 'price' },
-    // { name: 'Status', label: 'Protein (g)', field: 'protein' },
-    // { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-    // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-    // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
-  ]
+<script>
+import { ref } from 'vue'
+import { getDatabase, ref as FBref, onValue, set, update } from "firebase/database";
+import { useStore } from "@/pinia_store";
+
+var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
+console.log(today)
+
+const columns = [
+  {
+    name: 'type',
+    required: true,
+    label: "Type" ,
+    align: 'left',
+    field: row => row.name,
+    format: val => `${val}`,
+    // sortable: true
+  },
+  { name: 'Date', align: 'center', label: 'Date', field: 'date' },
+  { name: 'Status', label: 'Status', field: 'status'},
+  { name: 'Price', label: 'Price', field: 'price' },
+  // { name: 'Status', label: 'Protein (g)', field: 'protein' },
+  // { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
+  // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+  // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+]
+
+
+export default {
   
+
+  setup () {
+    // Pinia
+  const store = useStore();
+  var userID = store.userID;
+  // var lessonType = store.lessonType;
+
+  // Firebase
+  const db = getDatabase();
+  const userRef = FBref(db, "users/" + userID);
+  var userData = {}
+  var userBookings = {}
+
+  onValue(userRef, (snapshot) => {
+    userData = snapshot.val();
+    userBookings = userData.bookings
+  })
+
   const rows = [
-    {
-      name: 'Frozen Yogurt',
-      calories: 159,
-      fat: 6.0,
-      carbs: 24,
-      protein: 4.0,
-      sodium: 87,
-      calcium: '14%',
-      iron: '1%'
-    },
-    {
-      name: 'Ice cream sandwich',
-      calories: 237,
-      fat: 9.0,
-      carbs: 37,
-      protein: 4.3,
-      sodium: 129,
-      calcium: '8%',
-      iron: '1%'
-    },
-    {
-      name: 'Eclair',
-      calories: 262,
-      fat: 16.0,
-      carbs: 23,
-      protein: 6.0,
-      sodium: 337,
-      calcium: '6%',
-      iron: '7%'
-    },
-    {
-      name: 'Cupcake',
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      sodium: 413,
-      calcium: '3%',
-      iron: '8%'
-    },
-    {
-      name: 'Gingerbread',
-      calories: 356,
-      fat: 16.0,
-      carbs: 49,
-      protein: 3.9,
-      sodium: 327,
-      calcium: '7%',
-      iron: '16%'
-    },
-    {
-      name: 'Jelly bean',
-      calories: 375,
-      fat: 0.0,
-      carbs: 94,
-      protein: 0.0,
-      sodium: 50,
-      calcium: '0%',
-      iron: '0%'
-    },
-    {
-      name: 'Lollipop',
-      calories: 392,
-      fat: 0.2,
-      carbs: 98,
-      protein: 0,
-      sodium: 38,
-      calcium: '0%',
-      iron: '2%'
-    },
-    {
-      name: 'Honeycomb',
-      calories: 408,
-      fat: 3.2,
-      carbs: 87,
-      protein: 6.5,
-      sodium: 562,
-      calcium: '0%',
-      iron: '45%'
-    },
-    {
-      name: 'Donut',
-      calories: 452,
-      fat: 25.0,
-      carbs: 51,
-      protein: 4.9,
-      sodium: 326,
-      calcium: '2%',
-      iron: '22%'
-    },
-    {
-      name: 'KitKat',
-      calories: 518,
-      fat: 26.0,
-      carbs: 65,
-      protein: 7,
-      sodium: 54,
-      calcium: '12%',
-      iron: '6%'
-    }
   ]
-  
-  export default {
+
+  if (userBookings != undefined) {
+    for (var key in userBookings) {
+      let first = key.slice(0, 4);
+      let second = key.slice(4, 6);
+      let third = key.slice(6, 8);
+      let formatted = first + "/" + second + "/" + third
+      let displayed = third + "/" + second + "/" + first;
+      let status = ""
+
+      if (formatted > today) {
+        status = "UPCOMING"
+      } else if (formatted == today) {
+        status = "TODAY"
+      } else {
+        status = "PAST"
+      }
+
+      rows.push({
+        name: userBookings[key].type.toUpperCase(),
+        date: displayed,
+        status: status,
+        price: userBookings[key].price
+      })
+    }
+  }
+
+    return {
+      seperator: ref('cell'),
+      columns,
+      rows
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.my-sticky-header-table{
+  /* height or max-height is important */
+  height: 70vh;
+}
+
+  .q-table__top, .q-table__bottom, thead tr:first-child th{
+    /* bg color is important for th; just specify one */
+    background-color: $light-blue-8;
+    color: white;
+  }
+
+  thead tr th {
+    position: sticky;
+    z-index: 1;
+  }
+
+  thead tr:first-child th {
+      top: 0;  
+  }
     
 
-    setup () {
-      return {
-        seperator: ref('cell'),
-        columns,
-        rows
-      }
-    }
+  /* this is when the loading indicator appears */
+  .q-table--loading thead tr:last-child th {
+      /* height of all previous header rows */
+    top: 48px
   }
-  </script>
-  
-  <style lang="scss">
-  .my-sticky-header-table{
-    /* height or max-height is important */
-    height: 70vh;
-  }
-  
-    .q-table__top, .q-table__bottom, thead tr:first-child th{
-      /* bg color is important for th; just specify one */
-      background-color: $light-blue-8;
-      color: white;
-    }
-  
-    thead tr th {
-      position: sticky;
-      z-index: 1;
-    }
-
-    thead tr:first-child th {
-        top: 0;  
-    }
-      
-  
-    /* this is when the loading indicator appears */
-    .q-table--loading thead tr:last-child th {
-        /* height of all previous header rows */
-      top: 48px
-    }
-      
-    .font {
-      font-family: 'Open Sans', sans-serif;
-    }
-  </style>
+    
+</style>
