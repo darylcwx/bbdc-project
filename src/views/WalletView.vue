@@ -67,7 +67,7 @@
                         </div>
                     </q-card-section>
                     <q-card-section class="text-center">
-                        <q-btn no-caps rounded color="light-blue-8" label="Done!" @click="submit = false" />
+                        <q-btn no-caps rounded color="light-blue-8" label="Done!" @click="topUp" />
                     </q-card-section>
                 </q-card>
             </q-dialog>
@@ -100,7 +100,7 @@
 
 <script>
 import { ref } from 'vue'
-import { getDatabase, ref as FBref, onValue } from "firebase/database";
+import { getDatabase, ref as FBref, onValue, set } from "firebase/database";
 import { useStore } from "@/pinia_store";
 import gsap from 'gsap'
 
@@ -108,11 +108,14 @@ const db = getDatabase()
 const store = useStore()
 
 var userID = store.userID
+const userRef = FBref(db, 'users/' + userID)
 const walletRef = FBref(db, 'users/' + userID + '/wallet')
 var balance = 0
 
 onValue(walletRef, (snapshot) => {
-    balance = snapshot.val().toFixed(2);
+    // balance = snapshot.val().toFixed(2);
+    balance = snapshot.val()
+    console.log(balance)
 });
 
 const columns = [
@@ -152,7 +155,7 @@ export default {
             if (this.amount == "") {
                 return this.currBal
             }
-            var newBal = (this.currBal + parseFloat(this.amount)).toFixed(2)
+            var newBal = (+this.currBal + parseFloat(this.amount)).toFixed(2)
             return newBal
         },
         sum() {
@@ -167,6 +170,20 @@ export default {
         this.animate();
     },
     methods: {
+        topUp() {
+            let update = this.newBal
+            console.log(update)
+            set(userRef, {
+                wallet: update
+            })
+            .then(() => {
+                this.submit = false
+                return console.log('top-up success')
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        },
         confirm() {
             // setTimeout(event.$parent)
             // hide (event) => void 0

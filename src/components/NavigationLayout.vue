@@ -25,8 +25,7 @@
           <q-route-tab class="tab" no-caps name="dev-team" label="Dev Team" to="/dev-team" />
           <q-route-tab class="tab" no-caps name="login" label="Login" to="/login" v-if="this.$route.path === '/' || this.$route.path === '/dev-team' || this.$route.path === '/location'
           || this.$route.path === '/login' || this.$route.path === '/register'" />
-          {{signInCheck}}
-          <q-route-tab v-if="signInCheck == 'yes'" class="tab" no-caps name="logout" label="Logout" @click="logout"  />
+          <q-route-tab v-if="signInCheck == 'yes'" class="tab" no-caps name="logout" label="Logout" @click="logout" to="/"  />
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -225,6 +224,10 @@ export default {
         return 'bg-light-blue-8'
       }
     },
+    check() {
+      console.log(sessionStorage.getItem('signInCheck'))
+      return sessionStorage.getItem('signInCheck')
+    }
     // getRGBfromBG(){
       
     // }
