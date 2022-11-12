@@ -3,8 +3,9 @@
         <div class="bg"></div>
         <h2 class="header">Simulator Booking</h2>
         <div class="font row justify-center" style="width: 100%;">
+
+            <BookingCalendar />
         </div>
-        <BookingCalendar />
     </div>
 </template>
 
@@ -46,9 +47,11 @@ export default {
     flex-direction: column;
     height: 100%;
 }
+
 .font {
     font-family: 'Open Sans', sans-serif;
 }
+
 .bg {
     position: absolute;
     background: url('@/assets/booking-bg.jpg');

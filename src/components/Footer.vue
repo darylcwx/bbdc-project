@@ -1,5 +1,5 @@
 <template>
-    <div class="footer bg-primary text-white">
+    <div class="footer bg-light-blue-8 text-white">
         <div class="row">
             <div class="col-sm-6 operations q-px-md q-py-sm">
                 <h5 class="text-left q-py-sm">Operating Hours</h5>
@@ -39,8 +39,6 @@
     height: 200px;
     width: 100%;
     font-family: 'Raleway', sans-serif;
-    background: rgb(2, 136, 209);
-    background: black;
 }
 
 .app {

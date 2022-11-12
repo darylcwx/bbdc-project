@@ -11,7 +11,7 @@
     <!-- Nicer messgener but can't get script tag below to work rn -->
     <df-messenger
     intent="WELCOME"
-    chat-title="BBDCAgent"
+    chat-title="BBDC FAQ"
     agent-id="eed261ce-8c9f-4ef9-ab85-c650e0728f11"
     language-code="en"
     ></df-messenger>

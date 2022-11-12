@@ -1,15 +1,16 @@
 <template>
-  <q-card class="card" flat q-gutter-md>
+  <q-card class="card q-pb-md" style="width: 100%;" flat>
     <q-card-section horizontal class="bg-image">
       <q-card-section class="progress text-center">
-        <q-circular-progress v-if="value !== value" indeterminate show-value class="text-light-blue-8 text-bold"
-          size="25vw" :thickness="0.2" color="light-blue-8"><span class="" style="font-size: 50px;">Loading...</span>
+        <q-circular-progress rounded v-if="value !== value" indeterminate show-value class="text-light-blue-8 text-bold"
+          size="25vw" :thickness="0.2" color="light-blue-8"><span class="" style="font-size: 50%;">Loading...</span>
         </q-circular-progress>
 
-        <q-circular-progress v-else show-value class="text-light-blue-8 text-bold" :value="value" size="25vw"
-          :thickness="0.2" color="light-blue-8" animation-speed='30'>
+
+        <q-circular-progress rounded v-else show-value class="text-light-blue-8 text-bold" :value="value" size="25vw"
+          :thickness="0.2" color="light-blue-8" animation-speed='300'>
           {{ value }}%
-          <span id="complete-text">complete</span>
+          <div id="complete-text">complete</div>
         </q-circular-progress>
       </q-card-section>
     </q-card-section>
@@ -61,7 +62,6 @@ function getProgress() {
 
 <style scoped>
 .card {
-  width: 100%;
   height: auto;
   border-radius: 40px;
   background-color: black;
@@ -81,10 +81,9 @@ function getProgress() {
 /* .q-circular-progress:v-deep q-circular-progress__text {
   font-family: 'Open Sans', sans-serif;
 } */
-
 #complete-text {
-  font-size: 50%;
-  font-family: 'Open Sans', sans-serif;
+  font-size: 75%;
+  font-family: 'Oooh Baby', cursive;
 }
 </style>
 

@@ -1,66 +1,32 @@
 <template>
-  <div style="width: 100%;">
-    <q-splitter
-      v-model="splitterModel"
-      style="height: 450px;"
-      :limits="[50, 50]"
-      class="q-pa-lg font"
-    >
-      <template v-slot:before>
-        <div class="calendar-body text-center">
-          <q-date
-            class="text-dark"
-            landscape
-            v-model="date"
-            :events="events"
-            event-color="orange"
-            color="light-blue-8"
-            today-btn
-            :options="
-              (date) =>
-                date >= new Date().toLocaleDateString('sv').replaceAll('-', '/')"
-              style="border-radius: 20px;"
-          />
-        </div>
-      </template>
+  <div class="row justify-evenly calendar-body text-center font" style="width: 100%;">
+    <div class="col-12 col-md-5 q-py-md">
+      <q-date class="text-dark" v-model="date" @click="animatePanel" :events="events" event-color="orange"
+        color="light-blue-8" today-btn
+        :options="(date) => date >= new Date().toLocaleDateString('sv').replaceAll('-', '/')"
+        style="border-radius: 20px; width: 100%;" />
+    </div>
 
-      <template v-slot:after>
-        <q-tab-panels
-          v-model="date"
-          animated
-          transition-prev="jump-up"
-          transition-next="jump-up"
-          style="border-radius: 20px;"
-          class="q-mx-lg"
-        >
+    <div class="col-12 col-md-5 q-py-md">
+      <q-tab-panels v-model="date" class='panels' animated style="border-radius: 20px; width: 100%;">
+        <q-tab-panel v-for="(booking, date) of bookings" :key="date" :name="date" class="text-dark"
+          style="border-radius: 20px;">
+          <h3 class="q-pb-sm text-left font">{{ capitalizeTitle(booking.type) }}</h3>
+          <h5 class="q-pb-md text-left font">{{ booking.time }}</h5>
+          <p class="font">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.</p>
+        </q-tab-panel>
 
-          <q-tab-panel
-            v-for="(booking, date) of bookings"
-            :key="date"
-            :name="date"
-            class="text-dark panel"
-          >
-            <div class="text-h4 q-mb-md">{{ capitalizeTitle(booking.type) }}</div>
-            <strong><p>
-              Timeslot: {{ booking.time }}
-            </p></strong>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
-              praesentium cumque magnam odio iure quidem, quod illum numquam
-              possimus obcaecati commodi minima assumenda consectetur culpa fuga
-              nulla ullam. In, libero.
-            </p>
-          </q-tab-panel>
-        </q-tab-panels>
-      </template>
-    </q-splitter>
+      </q-tab-panels>
+    </div>
   </div>
 </template>
 
 <script>
 import { capitalize, ref } from "vue";
 import { getDatabase, ref as FBref, onValue, get } from "firebase/database";
-import { useStore } from "@/pinia_store";
+import { useStore } from "@/pinia_store"
 import gsap from 'gsap'
 const store = useStore();
 
@@ -69,9 +35,15 @@ var userID = store.userID;
 var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
 
 export default {
+  data() {
+    return {
+      onload: true,
+      width: window.innerWidth
+    }
+  },
   setup() {
     const db = getDatabase();
-    const bookingRef = FBref(db, 'users/'+userID+'/bookings')
+    const bookingRef = FBref(db, 'users/' + userID + '/bookings')
     // const bookingRef = FBref(db, "bookings");
 
     var dates = [];
@@ -90,8 +62,8 @@ export default {
         let post_str = first + "/" + second + "/" + third;
         dates.push(post_str);
       }
-    }, (error) => {console.log(error)})
-    
+    }, (error) => { console.log(error) })
+
 
     // get(bookingRef).then((snapshot) => {
     //   data = snapshot.val();
@@ -119,17 +91,24 @@ export default {
       bookings: bookings,
     };
   },
-  mounted(){
+  mounted() {
     this.animate()
   },
   methods: {
-    animate(){
+    animate() {
       gsap.from('.calendar-body',
-        {opacity: 0, x: -400, duration: 1, ease: 'power1'})
+        { opacity: 0, x: -400, duration: 1, ease: 'power1' })
     },
     capitalizeTitle(type) {
       return type.charAt(0).toUpperCase() + type.slice(1);
     },
+    animatePanel() {
+      if (this.onload == true) {
+        gsap.from('.panels',
+          { opacity: 0, y: 500, duration: 0.5, ease: 'power1' })
+      }
+      this.onload = false
+    }
   },
 };
 </script>
@@ -137,5 +116,11 @@ export default {
 <style>
 .font {
   font-family: 'Open Sans', sans-serif;
+}
+
+h3,
+h5 {
+  color: black;
+  padding: 0;
 }
 </style>

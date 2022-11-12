@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      class="my-sticky-header-table"
+      class="my-sticky-header-table font"
       title="Account History"
       :rows="rows"
       :columns="columns"
@@ -121,7 +121,9 @@ export default {
       top: 0;  
   }
     
-
+.font {
+  font-family: 'Open Sans', sans-serif;
+}
   /* this is when the loading indicator appears */
   .q-table--loading thead tr:last-child th {
       /* height of all previous header rows */

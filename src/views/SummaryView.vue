@@ -1,16 +1,17 @@
 <template>
-  <div class="container">
+  <div class="container q-pa-xl">
     <div class="bg"></div>
-    <div class="row justify-center q-pa-lg" style="width: 100%;">
-      <SummaryCard />
+    <div class="row justify-center" style="width: 100%;">
+      <SummaryCard  />
+      <CalendarComp />
     </div>
-    <CalendarComp />
-    <!-- add in road map visual, carouselll?  -->
+
+  <!-- add in road map visual, carouselll?  -->
 
 
 
 
-    <!-- <transition 
+  <!-- <transition 
       appear
       @before-enter="beforeEnter"
       @enter="enter"
@@ -19,10 +20,10 @@
         <div><h1>HELLO</h1></div>
       </transition> -->
 
-    <!-- <button @click="example = !example">toggle</button> -->
+  <!-- <button @click="example = !example">toggle</button> -->
 
 
-    <!-- <div class="q-pa-md">
+  <!-- <div class="q-pa-md">
         <q-linear-progress rounded size="50px" :value="progress2" color="primary" class="q-mt-sm">
         <div class="absolute-full flex flex-center">
           <q-badge text-color="white" :label="progressLabel2" />
@@ -42,48 +43,6 @@ export default {
   components: {
     CalendarComp,
     SummaryCard
-  },
-  setup() {
-    // const progress1 = ref(0.3)
-    // const progress2 = ref(0.9)
-    // const example = ref(false)
-
-    // const beforeEnter = (el) => {
-    //   el.style.transform = 'translateY(-60px)'
-    //   el.style.opacity = 0
-    // }
-
-    // const enter = (el, done) => {
-    //   gsap.to(el, {
-    //     y:0,
-    //     opacity: 1,
-    //     duration: 3,
-    //     ease: 'bounce.out',
-    //     onComplete: done
-    //   })
-    // }
-
-    // const afterEnter = () => {
-
-    // }
-
-    return {
-      // progress1,
-      // progressLabel1: computed(() => (progress1.value * 100).toFixed(2) + '%'),
-
-      // progress2,
-      // progressLabel2: computed(() => (progress2.value * 100) + '%'),
-
-      // value: 71,
-
-      // example
-
-      // beforeEnter,
-      // enter,
-      // afterEnter
-    }
-
-
   },
 }
 </script>

@@ -1,68 +1,42 @@
 <template>
   <div style="width: 100%">
-    <q-splitter v-model="splitterModel" :limits="[50, 50]" class="font">
-      <template v-slot:before>
-        <div>
-          <h3>Step 1: Choose your date!</h3>
-        </div>
-        <div class="q-pa-md calendar-body text-center">
+    <div class="row justify-center">
+      <div class="col-12 col-md-6">
+        <h5 class="step1 font text-white">Step 1: Choose your date!</h5>
+        <div class="q-pa-md calendar-body text-center ">
           <q-form @submit="onSubmit">
-            <q-date
-              class="text-dark"
-              landscape
-              v-model="date"
-              event-color="orange"
-              :events="events"
-              color="light-blue-8"
-              today-btn
-              :options="
-                (date) =>
-                  date >=
-                  new Date().toLocaleDateString('sv').replaceAll('-', '/')
-              "
-              
-              name="booking-date"
-            />
-             <q-btn class="q-my-md" label="Submit" type="submit" color="primary" rounded no-caps></q-btn>
+            <div class='placement'>
+              <q-date class="text-dark" landscape v-model="date" event-color="orange" :events="events"
+                color="light-blue-8" today-btn :options="
+                  (date) =>
+                    date >=
+                    new Date().toLocaleDateString('sv').replaceAll('-', '/')
+                " name="booking-date" style="border-radius: 20px;" />
+              <q-btn class="btn q-my-md" label="Submit" type="submit" color="primary" rounded no-caps>
+              </q-btn>
+            </div>
           </q-form>
         </div>
-      </template>
+      </div>
 
-      <template v-if="submitResult != ''" v-slot:after>
-        <div>
-          <h3>Step 2: Choose your timings!</h3>
+      <div v-if="submitResult != ''" class="col-12 col-md-6 step2">
+        <h5 class="font text-white">Step 2: Choose your timings!</h5>
+        
+          <div class="q-pa-md">
+            <div class='placement'>
+            <q-table :title="date" :rows="rows" :columns="columns" row-key="name"
+              :selected-rows-label="getSelectedString" selection="single" v-model:selected="selected"
+              style="border-radius: 20px;" />
+              <q-btn @click="onConfirm" label="Confirm" type="submit" color="primary" rounded no-caps class="q-my-md">
+            </q-btn>
+          </div>
+          
+          <div>
+            
+          </div>
         </div>
-        <div class="q-pa-md">
-          <q-table
-            :title="date"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-            :selected-rows-label="getSelectedString"
-            selection="single"
-            v-model:selected="selected"
-          />
-
-          <!-- <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div> -->
-        </div>
-        <div>
-          <span>Confirm your bookings!</span>
-          <q-btn
-            @click="onConfirm"
-            label="Confirm"
-            type="submit"
-            color="primary"
-            rounded
-            no-caps
-            class="q-my-md"
-          ></q-btn>
-        </div>
-      </template>
-
-      <!-- <span v-for="(item, index) in finalBooking" :key="index">
-        {{ item.name }} = {{ item.value }}
-         </span> -->
-    </q-splitter>
+      </div>
+    </div>
   </div>
 </template>
   
@@ -122,17 +96,17 @@ export default {
 
     if (userBookings != undefined) {
       let userBookingsArr = Object.keys(userBookings)
-      
+
       for (let i in userBookingsArr) {
-          let pre_str = userBookingsArr[i];
-          let first = pre_str.slice(0, 4);
-          let second = pre_str.slice(4, 6);
-          let third = pre_str.slice(6, 8);
-          let post_str = first + "/" + second + "/" + third;
-          dates.push(post_str);
+        let pre_str = userBookingsArr[i];
+        let first = pre_str.slice(0, 4);
+        let second = pre_str.slice(4, 6);
+        let third = pre_str.slice(6, 8);
+        let post_str = first + "/" + second + "/" + third;
+        dates.push(post_str);
       }
     }
-    
+
 
     // Populate the table
     const rows = [];
@@ -173,14 +147,13 @@ export default {
         }
         submitResult.value = data;
         // const bookingRef = FBref(db, "users/" + userID + "/booking");
-
-        console.log("ok");
+        
         gsap.from(".step2", {
           opacity: 0,
           x: 400,
           duration: 1,
           ease: "power1",
-        });
+        }); // not working
       },
 
       // FOR TABLE PICKER
@@ -191,9 +164,8 @@ export default {
       getSelectedString() {
         return selected.value.length === 0
           ? ""
-          : `${selected.value.length} record${
-              selected.value.length > 1 ? "s" : ""
-            } selected of ${rows.length}`;
+          : `${selected.value.length} record${selected.value.length > 1 ? "s" : ""
+          } selected of ${rows.length}`;
       },
 
       // CONFIRMING
@@ -206,47 +178,47 @@ export default {
         var remainingBalance = accountBalance - selected.value[0].price
 
         bookingData = {
-            date: cleanedDate,
-            timeslot: selected.value[0].name,
-            price: pricing
+          date: cleanedDate,
+          timeslot: selected.value[0].name,
+          price: pricing
         };
 
         if (remainingBalance >= 0) {
           if (!userArrKeys.includes("bookings")) {
             set(FBref(db, "users/" + userID + "/bookings/" + cleanedDate), {
-            time: bookingData.timeslot,
-            type: lessonType,
-            price: bookingData.price,
+              time: bookingData.timeslot,
+              type: lessonType,
+              price: bookingData.price,
             })
-            .then(() => {
-              alert("booking success")
+              .then(() => {
+                alert("booking success")
 
-              update(userRef, {
-              wallet: remainingBalance,
-              });   
-            })
-            .catch((error) => {
-              console.log(error);
-              console.log(error.message);
-            });
+                update(userRef, {
+                  wallet: remainingBalance,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                console.log(error.message);
+              });
           }
           else if (!(Object.keys(userBookings).includes(cleanedDate))) {
             set(FBref(db, "users/" + userID + "/bookings/" + cleanedDate), {
-            time: bookingData.timeslot,
-            type: lessonType,
-            price: bookingData.price,
+              time: bookingData.timeslot,
+              type: lessonType,
+              price: bookingData.price,
             })
-            .then(() => {
-              alert("booking success")
+              .then(() => {
+                alert("booking success")
 
-              update(userRef, {
-              wallet: remainingBalance,
-              });   
-            })
-            .catch((error) => {
-              console.log(error);
-              console.log(error.message);
-            });
+                update(userRef, {
+                  wallet: remainingBalance,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                console.log(error.message);
+              });
           }
           else {
             alert("You already have a booking on this date")
@@ -261,19 +233,41 @@ export default {
       },
     };
   },
-  components: {
-    // BookingTable,
+  mounted() {
+    this.animate();
   },
-  methods: {},
+  methods: {
+    animate() {
+      gsap.from('.step1',
+        { opacity: 0, x: -400, duration: 0.5, ease: 'power1' })
+      gsap.from('.calendar-body',
+        { opacity: 0, x: -400, duration: 0.5, ease: 'power1', delay: 0.2 })
+      gsap.from('.btn',
+        { opacity: 0, x: -400, duration: 0.5, ease: 'power1', delay: 0.4 })
+
+    }
+  }
 };
 </script>
   
 <style>
-h3 {
+h5 {
   font-weight: 100;
-  padding: 50px 0 20px 0;
+  padding: 0 0 0 0;
+
 }
+
+.q-table th {
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .font {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.placement {
+  display: grid;
+  place-items: center;
 }
 </style>

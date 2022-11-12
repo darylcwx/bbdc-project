@@ -1,11 +1,9 @@
 <template>
     <div class="container q-pa-xl">
         <div class="bg"></div>
-        <h2 class="header">Account History</h2>
-        <div class="table row justify-center" style="width: 100%;">
-            <div class="col-8">
-                <HistoryTable />
-            </div>
+        <h2 class="header">My History</h2>
+        <div class="table row justify-center">
+            <HistoryTable />
         </div>
     </div>
 

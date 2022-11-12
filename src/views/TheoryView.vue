@@ -2,14 +2,14 @@
     <div class="container q-pa-xl">
         <div class="bg"></div>
         <h2 class="header">Theory</h2>
-        <h5 class="font row justify-center text-center items-center select">
+        <h5 class="font row justify-center text-center items-center select text-white">
             I am a class&nbsp;&nbsp;
             <q-select @update:model-value="val => loadLessons(val)" style="width: 200px; margin-top: 20px;" rounded
                 standout v-model="cls" :options="options" dark hint="Select your class">
             </q-select>
             &nbsp;&nbsp;student!
         </h5>
-        <div class="font row justify-center text-center cards" :class="{ hidden: isActive }">
+        <div class="font row justify-center text-center" :class="{ hidden: isActive }">
             <div v-for="(tt, index) of this.theoryTypes" :key='index' class="col-10 col-sm-5 col-md-3 col-lg-2 q-ma-md"
                 :class="'tt' + index">
                 <TheoryCard :name="tt.name" :desc="tt.desc" :pic="tt.pic" />
@@ -51,10 +51,6 @@ export default {
     methods: {
         loadLessons(value) {
             this.isActive = false
-            // gsap.from('.cards',
-            //     { opacity: 0, x: -700, duration: 1, ease: 'power1', delay: 1 })
-            // { opacity: 0, x: -700, y: -100 },
-            // { opacity: 1, x: 0, y: 0, duration: 1, ease: 'power1', delay: 1 })
             let dly = 0.2
             for (let tt of this.theoryTypes) {
                 gsap.from('.tt' + tt.id,
@@ -66,11 +62,6 @@ export default {
                 { opacity: 0, y: 300, duration: 1, ease: 'power1' })
             gsap.from('.header',
                 { opacity: 0, x: -300, duration: 1, ease: 'back' })
-            let dly = 0.2
-            for (let tt of this.theoryTypes) {
-                gsap.from('.tt' + tt.id,
-                    { opacity: 0, y: 200, duration: 0.5, ease: 'power1', delay: dly * tt.id })
-            }
         }
     }
 }

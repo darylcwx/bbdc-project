@@ -26,7 +26,7 @@
 
         </q-btn>
         <h2 class="header1">My Wallet</h2>
-        <div class="font row w-40 items-center one">
+        <div class="font row items-center one">
             <div class="col-6 text-right q-pa-sm">Current Balance:</div>
             <q-input class="col-6 q-pa-sm" readonly v-model="currBal" dark :type="wantToSee ? 'text' : 'password'"
                 prefix="$">
@@ -36,13 +36,13 @@
                 </template>
             </q-input>
         </div>
-        <div class="font row w-40 items-center two">
+        <div class="font row items-center two">
             <div class="col-6 text-right q-pa-sm">Amount to Top-up:</div>
             <div class="col-6 q-pa-sm">
                 <q-input dark v-model="amount" type="number" prefix="$" />
             </div>
         </div>
-        <div class="font row w-40 items-center three">
+        <div class="font row items-center three">
             <div class="col-6 text-right q-pa-sm">Balance <u>after</u> Top-up:</div>
             <q-input class="col-6 q-pa-sm" readonly v-model="newBal" dark :type="wantToSee ? 'text' : 'password'"
                 prefix="$">
@@ -77,7 +77,7 @@
         </div>
         <q-btn class="historyBtn font" no-caps rounded color="light-blue-8" label="Show / Hide history"
             @click="toggleHistory()">
-            <q-tooltip class="text-center bg-light" style="font-size:15px;" anchor="center left" self="center right">To
+            <q-tooltip class="text-center bg-light font" style="font-size:15px;" anchor="center left" self="center right">To
                 respect your privacy, we have temporarily hidden your top up history. <br>Click here if you'd like to
                 see it!</q-tooltip>
         </q-btn>
@@ -239,7 +239,7 @@ export default {
 }
 .historyBtn {
     position: fixed;
-    top: 625px;
+    top: 50vh;
     right: 30px;
 }
 
@@ -253,9 +253,6 @@ hr {
     height: 1px;
 }
 
-.w-40 {
-    width: 40%;
-}
 .font {
     font-family: 'Open Sans', sans-serif;
 }
