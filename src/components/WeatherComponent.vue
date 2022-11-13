@@ -26,7 +26,7 @@ export default {
             //api_key: "b14210f72f1ac7b474488b9bfb16831d",
             api_key: "0e8985f71a00d62a07abedf89d424104",
             weather_url_base: "https://api.openweathermap.org/data/2.5/weather?",
-            location_url_base: "http://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=",
+            location_url_base: "https://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=",
             temp: '',
             humidity: '',
             feelsLike: '',
