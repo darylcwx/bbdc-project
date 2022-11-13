@@ -46,9 +46,9 @@ export default {
                     this.weather = weather.weather[0].main
                     if (this.weather == 'Clouds') {
                         this.img = 'sun-cloud.png'
-                    } else if (this.weather = 'Sunny') {
+                    } else if (this.weather == 'Sunny') {
                         this.img = 'sun.png'
-                    } else if (this.weather = 'Rainy') {
+                    } else if (this.weather == 'Rainy') {
                         this.img = 'rain.png'
                     } else {
                         this.img = 'cloud.png'
