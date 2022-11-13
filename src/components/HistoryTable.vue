@@ -185,7 +185,6 @@ export default {
           });
         }
         else if (status == "PAST") {
-          setTimeout(() => {
           $q.notify({
             message: 'You cannot cancel past bookings!',
             color: 'light-blue-8',
@@ -194,7 +193,6 @@ export default {
             progress: true,
             timeout: 1000,
           })
-        }, 1000)
       }
     }
   }

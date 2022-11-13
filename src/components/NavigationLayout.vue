@@ -109,7 +109,7 @@
               <q-icon name="history" size="lg"></q-icon>
             </q-item-section>
             <q-item-section>
-              History
+              Bookings
             </q-item-section>
           </q-item>
         </router-link>
