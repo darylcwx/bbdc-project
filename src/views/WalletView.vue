@@ -91,7 +91,7 @@
                     <template v-slot:bottom-row>
                         <q-tr no-hover>
                             <q-td class="text-bold">Total Topped Up:</q-td>
-                            <q-td colspan="100%" class="text-left text-bold">${{ sum }}</q-td>
+                            <q-td colspan="100%" class="text-left text-bold">${{ totalSum }}</q-td>
                         </q-tr>
                     </template>
                 </q-table>
@@ -124,23 +124,12 @@ onValue(walletRef, (snapshot) => {
     balance = balance.toFixed(2)
 });
 
-const rows = []
-onValue(topUpRef, (snapshot) => {
-    let data = snapshot.val()
-    for (let row in data) {
-        let topup = {
-            num: +row+1,
-            date: data[row].date,
-            amount: data[row].amount
-        }
-        rows.push(topup)
-    }
-})
+
 
 const columns = [
-    { name: 'num', label: 'No', align: 'left', field: 'num', sortable: false },
-    { name: 'date', required: true, label: 'Date', align: 'left', field: 'date', format: val => `${val}`, sortable: true },
-    { name: 'amount', label: 'Amount', align: 'left', field: 'amount', sortable: true },
+    { name: 'num', label: 'No', align: 'left', field: 'num' },
+    { name: 'date', required: true, label: 'Date', align: 'left', field: 'date', format: val => `${val}` },
+    { name: 'amount', label: 'Amount', align: 'left', field: 'amount' },
 ]
 // const rows = [
 //     { num: 1, date: '01/10/2022', amount: '$50' },
@@ -165,6 +154,26 @@ export default {
     setup() {
 
         const $q = useQuasar()
+        const rows = []
+        var sn = 1
+        var data = {}
+        var totalSum = 0
+        onValue(topUpRef, (snapshot) => {
+            data = snapshot.val()
+            
+        })
+
+        for (let row in data) {
+            let topup = {
+                num: sn,
+                date: data[row].date,
+                amount: data[row].amount
+            }
+            totalSum += +data[row].amount
+            console.log(topup)
+            rows.push(topup)
+            sn++
+        }
 
         return {
             columns,
@@ -172,6 +181,7 @@ export default {
             submit: ref(false),
             popup: ref(false),
             tl: gsap.timeline({ paused: true }),
+            totalSum,
         }
     },
     computed: {
@@ -182,13 +192,7 @@ export default {
             var newBal = (+this.currBal + parseFloat(this.amount)).toFixed(2)
             return newBal
         },
-        sum() {
-            var total = 0
-            for (let i = 0; i < this.rows.length; i++) {
-                total += parseFloat(this.rows[i].amount.slice(1))
-            }
-            return total
-        }
+        
     },
     mounted() {
         this.animate();
@@ -202,8 +206,13 @@ export default {
             var todayDate = new Date()
             onValue(topUpRef, (snapshot) => {
                 var data = snapshot.val();
-                let lastTopUp = +Object.keys(data).pop();
-                thisTopUp = lastTopUp + 1
+                if (data == null) {
+                    thisTopUp = 1
+                } else {
+                    thisTopUp = Object.keys(data).length + 1
+                }
+                // let lastTopUp = +Object.keys(data).pop();
+                // thisTopUp = lastTopUp + 1
                 console.log(typeof todayDate)
                 let dd = todayDate.getDate()
                 console.log(dd)
