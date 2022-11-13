@@ -262,7 +262,7 @@ export default {
             })
           }
         } 
-        else if (accountBalance < 0) {
+        else if (accountBalance == 0) {
           $q.notify({
             message: `Your wallet has no credits. Please top up to proceed`,
             color: 'light-blue-8',
