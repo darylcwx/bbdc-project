@@ -86,6 +86,7 @@ export default {
         calculateAndDisplayRoute() {
             const directionsService = new window.google.maps.DirectionsService()
             const directionsRenderer = new window.google.maps.DirectionsRenderer()
+            this.steps = []
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     // success
@@ -116,9 +117,9 @@ export default {
                                         let instructions = ""
                                         let numstops = i.transit.num_stops
                                         let type = i.transit.line.vehicle.name
-                                        if (type == 'Tram'){
+                                        if (type == 'Tram') {
                                             type = 'LRT'
-                                        } else if (type == 'Subway'){
+                                        } else if (type == 'Subway') {
                                             type = 'MRT'
                                         }
                                         let ss = i.transit.departure_stop.name
@@ -131,19 +132,21 @@ export default {
                                     } else if (i.travel_mode == 'WALKING') {
                                         if (i.steps) {
                                             for (let step of i.steps) {
+                                                console.log(step)
                                                 let instructions = step.instructions
                                                 let distance = step.distance.text
                                                 let duration = step.duration.text
-
+                                                console.log(instructions, distance, duration)
                                                 instructions = instructions.replace(/<\/?[^>]+(>|$)/g, "");
                                                 if (instructions.includes('Destination')) {
                                                     let first = instructions.slice(0, instructions.indexOf('Destination'));
                                                     let second = instructions.slice(instructions.indexOf('Destination'))
                                                     this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
-                                                    this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
-                                                } else if (instructions.includes('Take the stairs')){
-                                                    let first = instructions.slice(0, instructions.indexOf('Take'));
-                                                    let second = instructions.slice(instructions.indexOf('Take'))
+                                                    //this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
+                                                    
+                                                } else if (instructions.includes('Take the stairs')) {
+                                                    let first = instructions.slice(0, instructions.indexOf('Take the stairs'));
+                                                    let second = instructions.slice(instructions.indexOf('Take the stairs'))
                                                     this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
                                                     this.steps.push({ 'directions': second, 'distance': '', 'ett': '1 min' })
                                                 } else {
@@ -161,6 +164,12 @@ export default {
                                                 let second = instructions.slice(instructions.indexOf('Destination'))
                                                 this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
                                                 this.steps.push({ 'directions': second, 'distance': '', 'ett': '' })
+                                            }
+                                            if (instructions.includes('Take the stairs')) {
+                                                let first = instructions.slice(0, instructions.indexOf('Take the stairs'));
+                                                let second = instructions.slice(instructions.indexOf('Take the stairs'))
+                                                this.steps.push({ 'directions': first, 'distance': distance, 'ett': duration })
+                                                this.steps.push({ 'directions': second, 'distance': '', 'ett': '1 min' })
                                             } else {
 
                                                 this.steps.push({ 'directions': instructions, 'distance': distance, 'ett': duration })
@@ -182,6 +191,7 @@ export default {
                                         }
                                     }
                                 }
+                                
                                 // unhide table
                                 this.isActive = false
                             })
