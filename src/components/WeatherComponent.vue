@@ -59,7 +59,7 @@ export default {
                 })
         },
         getLocation() {
-            fetch(`http://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=${this.api_key}`)
+            fetch(`https://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=${this.api_key}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
