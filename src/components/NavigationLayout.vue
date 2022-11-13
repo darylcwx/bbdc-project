@@ -13,7 +13,8 @@
         </q-avatar>
 
         <q-toolbar-title
-          v-if="this.$route.path !== '/' && this.$route.path !== '/dev-team' && this.$route.path !== '/location'  && this.$route.path !== '/login'">
+          v-if="this.$route.path !== '/' && this.$route.path !== '/dev-team' && this.$route.path !== '/location'  && this.$route.path !== '/login'"
+          >
           Bukit Better Driving Centre
         </q-toolbar-title>
 
