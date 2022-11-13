@@ -4,7 +4,7 @@
         <q-card class="card q-mx-auto" bordered dark>
             <q-card-section class="text-center">
                 <q-icon id="check" name="check" size="10vh" />
-                <h3 class="header q-py-md">Booking Confirmed</h3>
+                <h3 class="text-white header q-py-md">Booking Confirmed</h3>
                 <div class="info font">We are pleased to inform you that your booking has been confirmed! See you
                     then! 😊
                 </div>
@@ -104,7 +104,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .container{
     margin-top: 200px;
 }

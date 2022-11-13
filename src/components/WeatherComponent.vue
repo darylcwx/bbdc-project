@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper q-pa-md font text-white">
+    <div class="wrapper q-pa-md q-my-md font text-white">
         <div class="row justify-between items-center">
             <h3 class="font text-white q-pa-none text-left">Today's weather</h3>
             <q-img v-if="img != ''" class='image' :src="require(`@/assets/weather/${img}`)"></q-img>

@@ -51,64 +51,9 @@ export default {
 </script>
 
 <style>
-/* .hello-enter-from{
-    opacity: 0;
-    transform: translateY(-60px);
-  }
-
-  .hello-enter-to{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .hello-enter-active{
-    transition: all 2s ease;
-    animation: wobble 0.5s ease;
-  }
-  .hello-leave-from{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .hello-leave-to{
-    opacity: 0;
-    transform: translateY(-60px);
-  }
-  .hello-leave-active{
-    transition: all 2s ease; 
-    animation: wobble 0.5s ease;
-  }
-
-  .hello-move {
-
-  }
-
-  @keyframes wobble {
-    0% {
-      opacity: 0;
-      transform: translateY(-60px);
-    }
-
-    50% {
-      opacity: 1;
-      transform: translateY(0px);
-    }
-
-    60% {
-      transform: translateX(8px)
-    }
-    70% {
-      transform: translateX(-8px)
-    }
-    80% {
-      transform: translateX(4px)
-    }
-    90% {
-      transform: translateX(-4px)
-    }
-    100% {
-      transform: translateX(0px)
-    }
-
-  } */
+.container {
+  margin: 0;
+}
 .bg {
   position: absolute;
   background: url('@/assets/summary-bg.jpg');

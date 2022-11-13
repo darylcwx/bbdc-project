@@ -2,7 +2,7 @@
     <div class="container q-pa-xl">
         <div class="bg"></div>
         <h2 class="header">Practical</h2>
-        <h5 class="font row justify-center text-center items-center select text-white">
+        <h5 class="font row justify-center text-center items-center select text-white q-pa-none">
             I am looking to book a&nbsp;&nbsp;
             <q-select @update:model-value="val => loadLessons(val)" style="width: 200px; margin-top: 20px;" rounded
                 standout v-model="type" :options="options" dark hint="Select type of booking">
