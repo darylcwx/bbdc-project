@@ -103,7 +103,7 @@
 
 <script>
 import { ref } from 'vue'
-import { getDatabase, ref as FBref, onValue, update } from "firebase/database";
+import { getDatabase, ref as FBref, onValue, update, set } from "firebase/database";
 import { useStore } from "@/pinia_store";
 import gsap from 'gsap'
 
@@ -113,23 +113,39 @@ const store = useStore()
 var userID = store.userID
 const userRef = FBref(db, 'users/' + userID)
 const walletRef = FBref(db, 'users/' + userID + '/wallet')
+const topUpRef = FBref(db, 'users/' + userID + '/topup')
 var balance = 0
 
+
 onValue(walletRef, (snapshot) => {
-    // balance = snapshot.val().toFixed(2);
-    balance = snapshot.val()
-    console.log(balance)
+    balance = +snapshot.val()
+    balance = balance.toFixed(2)
 });
 
+const rows = []
+onValue(topUpRef, (snapshot) => {
+    let data = snapshot.val()
+    for (let row in data) {
+        let topup = {
+            num: +row+1,
+            date: data[row].date,
+            amount: data[row].amount
+        }
+        rows.push(topup)
+    }
+})
+
 const columns = [
+    { name: 'num', label: 'No', align: 'left', field: 'num', sortable: false },
     { name: 'date', required: true, label: 'Date', align: 'left', field: 'date', format: val => `${val}`, sortable: true },
     { name: 'amount', label: 'Amount', align: 'left', field: 'amount', sortable: true },
 ]
-const rows = [
-    { date: '01/10/2022', amount: '$50' },
-    { date: '05/10/2022', amount: '$60' },
-    { date: '09/10/2022', amount: '$65' }
-]
+// const rows = [
+//     { num: 1, date: '01/10/2022', amount: '$50' },
+//     { num: 2, date: '05/10/2022', amount: '$60' },
+//     { num: 3, date: '09/10/2022', amount: '$65' }
+// ]
+// console.log(rows)
 
 export default {
     name: 'app',
@@ -174,11 +190,42 @@ export default {
     },
     methods: {
         topUp() {
-            console.log(this.newBal)
             update(userRef, {
-                wallet: this.newBal
+                wallet: parseFloat(this.newBal)
+            })
+            var thisTopUp = 0
+            var todayDate = new Date()
+            onValue(topUpRef, (snapshot) => {
+                var data = snapshot.val();
+                let lastTopUp = +Object.keys(data).pop();
+                thisTopUp = lastTopUp + 1
+                console.log(typeof todayDate)
+                let dd = todayDate.getDate()
+                console.log(dd)
+                let mm = todayDate.getMonth()+1
+                console.log(mm)
+                let yyyy = todayDate.getFullYear()
+                console.log(yyyy)
+                if(dd<10) 
+                    {
+                        dd='0'+dd;
+                    } 
+
+                    if(mm<10) 
+                    {
+                        mm='0'+mm;
+                    } 
+                todayDate = dd.toString()+'/'+mm.toString()+'/'+yyyy.toString()
+                console.log(todayDate)
+            });
+            const rowRef = FBref(db, 'users/' + userID + '/topup/' + thisTopUp)
+            // let todayString = todayDate.toString()
+            set(rowRef, {
+                date: todayDate,
+                amount: this.amount
             })
             this.submit = false
+            
         },
         confirm() {
             // setTimeout(event.$parent)
