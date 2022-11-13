@@ -1,8 +1,8 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md col-10">
     <q-table
       class="my-sticky-header-table font"
-      title="Account History"
+      title="All Bookings"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -10,31 +10,56 @@
       bordered
       :seperator="separator"
       no-data-label="You don't have any sessions! Book a lesson now!"
+      selection="single"
+      v-model:selected="selected"
+      :selected-rows-label="getSelectedString"
+    />
+    <div class="col-10 justify-end row">
+    <q-btn
+      v-if="selected.length > 0"
+      @click="onCancel"
+      label="Cancel Booking"
+      type="submit"
+      color="light-blue-8"
+      rounded
+      no-caps
+      class="q-my-md"
     />
   </div>
+  </div>
+
+  
+
+  <!-- <div class="q-mt-md">
+      Selected: {{ JSON.stringify(selected) }}
+    </div> -->
 </template>
 
 <script>
 import { ref } from 'vue'
 import { getDatabase, ref as FBref, onValue, set, update } from "firebase/database";
 import { useStore } from "@/pinia_store";
+import { useQuasar } from 'quasar'
+import { useRouter } from "vue-router";
 
 var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
-console.log(today)
+// console.log(today)
 
 const columns = [
   {
-    name: 'type',
+    name: 'sn',
     required: true,
-    label: "Type" ,
+    label: "SN." ,
     align: 'left',
     field: row => row.name,
     format: val => `${val}`,
     // sortable: true
   },
+  { name: 'Type', align: 'center', label: 'Type', field: 'type' },
   { name: 'Date', align: 'center', label: 'Date', field: 'date' },
   { name: 'Status', label: 'Status', field: 'status'},
   { name: 'Price', label: 'Price', field: 'price' },
+  
   // { name: 'Status', label: 'Protein (g)', field: 'protein' },
   // { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
   // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
@@ -56,6 +81,11 @@ export default {
   const userRef = FBref(db, "users/" + userID);
   var userData = {}
   var userBookings = {}
+  var serialNumber = 1
+  const selected = ref([]);
+
+  const $q = useQuasar()
+  const router = useRouter()
 
   onValue(userRef, (snapshot) => {
     userData = snapshot.val();
@@ -83,24 +113,98 @@ export default {
       }
 
       rows.push({
-        name: userBookings[key].type.toUpperCase(),
+        name: serialNumber,
+        type: userBookings[key].type.toUpperCase(),
         date: displayed,
         status: status,
         price: userBookings[key].price
       })
+
+      serialNumber += 1
     }
   }
 
     return {
       seperator: ref('cell'),
       columns,
-      rows
+      rows,
+      selected: selected,
+
+      getSelectedString() {
+        return selected.value.length === 0
+          ? ""
+          : `${selected.value.length} record${selected.value.length > 1 ? "s" : ""
+          } selected of ${rows.length}`;
+      },
+
+      onCancel() {
+
+        var date = selected.value[0].date.replaceAll("/", "")
+        let first = date.slice(0, 2);
+        let second = date.slice(2, 4);
+        let third = date.slice(4, 8);
+        let formatted = third + second + first
+        var type = selected.value[0].type.toLowerCase()
+        var price = selected.value[0].price
+        var status = selected.value[0].status
+
+        if (status == "UPCOMING" || status == "TODAY") {
+          set(FBref(db, "users/" + userID + "/bookings/" + formatted), {
+              null: null
+            })
+          .then(() => {
+            var refund = 0
+
+            if (status == "UPCOMING") {
+            refund = price
+            var newBalance = userData.wallet + refund
+            }
+            else {
+              refund = price * 0.5
+              var newBalance = userData.wallet + refund
+            }
+
+            update(userRef, {
+              wallet: parseFloat(newBalance)
+            })
+
+            $q.notify({
+            message: `You have successfully cancelled your booking! $${ refund } has been refunded to your wallet.`,
+            color: 'light-blue-8',
+            icon: 'check_circle',
+            position: 'center',
+            progress: true,
+            timeout: 3000,
+            })
+
+            router.push('/summary')
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(error.message);
+          });
+        }
+        else if (status == "PAST") {
+          setTimeout(() => {
+          $q.notify({
+            message: 'You cannot cancel past bookings!',
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'warning',
+            progress: true,
+            timeout: 1000,
+          })
+        }, 1000)
+      }
     }
   }
+  }
 }
+
+
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .my-sticky-header-table{
   /* height or max-height is important */
   height: 70vh;

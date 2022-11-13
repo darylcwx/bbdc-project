@@ -14,22 +14,28 @@
                 <div class="color font">
                     <!-- Package name, date and timing data retrive from firebase db -->
                     <div class="row justify-center items-center" style="height: 100%;">
-                        <div class="col-10 col-md-4 text-center q-my-md">
+                        <div class="col-10 col-md-3 text-center q-my-md">
                             Package
                             <div class="formatText">
                                 {{ lesson }}
                             </div>
                         </div>
-                        <div class="col-10 col-md-4 text-center q-my-md">
+                        <div class="col-10 col-md-3 text-center q-my-md">
                             Date
                             <div class="formatText">
                                 {{ lessonDate }}
                             </div>
                         </div>
-                        <div class="col-10 col-md-4 text-center q-my-md">
+                        <div class="col-10 col-md-3 text-center q-my-md">
                             Timing
                             <div class="formatText">
                                 {{ lessonTime }}
+                            </div>
+                        </div>
+                        <div class="col-10 col-md-3 text-center q-my-md">
+                            Balance
+                            <div class="formatText">
+                                ${{ currentBal }}
                             </div>
                         </div>
                     </div>
@@ -71,7 +77,8 @@ export default {
         return {
             lesson: formattedLesson,
             lessonDate: store.lessonDate,
-            lessonTime: store.lessonTime
+            lessonTime: store.lessonTime,
+            currentBal: store.currentBal
         }
 
     },
@@ -97,7 +104,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container{
     margin-top: 200px;
 }

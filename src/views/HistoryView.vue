@@ -1,7 +1,7 @@
 <template>
     <div class="container q-pa-xl">
         <div class="bg"></div>
-        <h2 class="header">My History</h2>
+        <h2 class="header">All Bookings</h2>
         <div class="table row justify-center">
             <HistoryTable />
         </div>

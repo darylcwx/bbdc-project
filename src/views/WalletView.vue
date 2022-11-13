@@ -105,7 +105,9 @@
 import { ref } from 'vue'
 import { getDatabase, ref as FBref, onValue, update, set } from "firebase/database";
 import { useStore } from "@/pinia_store";
+// import { useRouter } from 'vue-router';
 import gsap from 'gsap'
+import { useQuasar } from 'quasar';
 
 const db = getDatabase()
 const store = useStore()
@@ -161,6 +163,9 @@ export default {
         }
     },
     setup() {
+
+        const $q = useQuasar()
+
         return {
             columns,
             rows,
@@ -225,7 +230,17 @@ export default {
                 amount: this.amount
             })
             this.submit = false
-            
+
+            this.$q.notify({
+            message: `You have successfully topped up your Wallet! Your new balance is $${this.newBal}`,
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'check_circle',
+            progress: true,
+            timeout: 2000,
+            })
+
+            this.$router.push("/summary")
         },
         confirm() {
             // setTimeout(event.$parent)

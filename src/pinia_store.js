@@ -9,6 +9,7 @@ export const useStore = defineStore('currentUser', {
             lessonType: "",
             lessonDate: "",
             lessonTime: "",
+            currentBal: "",
         }
     },
     getters: {

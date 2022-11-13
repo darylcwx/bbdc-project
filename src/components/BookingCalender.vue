@@ -46,6 +46,7 @@ import { getDatabase, ref as FBref, onValue, set, update } from "firebase/databa
 import { useStore } from "@/pinia_store";
 import gsap from "gsap";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 
 var today = new Date().toLocaleDateString("sv").replaceAll("-", "/");
@@ -76,6 +77,7 @@ export default {
     const store = useStore();
     var userID = store.userID;
     var lessonType = store.lessonType;
+    
 
     // Firebase
     const db = getDatabase();
@@ -83,6 +85,7 @@ export default {
     const userRef = FBref(db, "users/" + userID)
     
     const router = useRouter();
+    const $q = useQuasar();
 
     var accountBalance = ref(0)
     var userBookings = ref({})
@@ -178,17 +181,30 @@ export default {
       // CONFIRMING
       onConfirm() {
 
-        var chosenDate = submitResult.value[0].value
-        var pricing = selected.value[0].price
-        var cleanedDate = chosenDate.split("/").join("")
-        var bookingData = {};
-        var remainingBalance = accountBalance - selected.value[0].price
+        
+        if (selected.value[0] == null) {
+          $q.notify({
+            message: `Please choose a timeslot!`,
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'warning',
+            progress: true,
+            timeout: 1000,
+            })
+        }
+        else {
+          var chosenDate = submitResult.value[0].value
+          var pricing = selected.value[0].price
+          var cleanedDate = chosenDate.split("/").join("")
+          var bookingData = {};
+          var remainingBalance = accountBalance - selected.value[0].price
 
-        bookingData = {
-          date: cleanedDate,
-          timeslot: selected.value[0].name,
-          price: pricing
-        };
+          bookingData = {
+            date: cleanedDate,
+            timeslot: selected.value[0].name,
+            price: pricing
+          };
+        }
 
         if (remainingBalance >= 0) {
           if (!userArrKeys.includes("bookings")) {
@@ -202,6 +218,7 @@ export default {
                   wallet: remainingBalance,
                 });
 
+                store.currentBal = remainingBalance
                 store.lessonDate = chosenDate
                 store.lessonTime = selected.value[0].name
 
@@ -223,6 +240,7 @@ export default {
                   wallet: remainingBalance,
                 });
 
+                store.currentBal = remainingBalance
                 store.lessonDate = chosenDate
                 store.lessonTime = selected.value[0].name
 
@@ -234,14 +252,36 @@ export default {
               });
           }
           else {
-            alert("You already have a booking on this date")
+            $q.notify({
+            message: `You already have a booking on this date! Please choose another date`,
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'warning',
+            progress: true,
+            timeout: 2500,
+            })
           }
-        } else if (accountBalance < 0) {
-          alert("You're broke bro")
+        } 
+        else if (accountBalance < 0) {
+          $q.notify({
+            message: `Your wallet has no credits. Please top up to proceed`,
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'warning',
+            progress: true,
+            timeout: 2500,
+            })
         }
 
         else if (remainingBalance < 0) {
-          alert("You do not have enough money to book this session")
+          $q.notify({
+            message: `You do not have enough credits in your wallet. Please top up to proceed`,
+            color: 'light-blue-8',
+            position: 'center',
+            icon: 'warning',
+            progress: true,
+            timeout: 2500,
+            })
         }
       },
     };
